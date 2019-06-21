@@ -1,0 +1,17 @@
+[package]
+name = "rust_os"
+version = "0.1.0"
+authors = ["myomi <m.myouchin@nakamura-joho.co.jp>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+# error: language item required, but not found: `eh_personality` の解決に以下の記述を追加する。
+# eh_personality は stack unwindingの実装に必要な language item。ここではpanic時にabortすることでコンパイルエラーを回避する 
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
