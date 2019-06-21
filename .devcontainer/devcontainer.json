@@ -15,8 +15,10 @@
 
 	"extensions": [
 		"rust-lang.rust",
+		"esbenp.prettier-vscode",
 		"bungcip.better-toml",
-		"vadimcn.vscode-lldb"
+		"vadimcn.vscode-lldb",
+		"eamodio.gitlens"
 	],
 	"settings": {
 		"lldb.executable": "/usr/bin/lldb-3.9"

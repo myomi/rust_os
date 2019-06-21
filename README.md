@@ -13,18 +13,33 @@ code ./rust_os
 ```
 
 ## Build
-### Linux
 ``` sh
-cargo rustc -- -C link-arg=-nostartfiles
+cargo xbuild
 ```
-### Windows
+
+## Create boot image
 ``` sh
-cargo rustc -- -C link-args="/ENTRY:_start /SUBSYSTEM:console"
+cargo bootimage
 ```
-### macOS
-``` sh
-cargo rustc -- -C link-args="-e __start -static -nostartfiles"
+
+## Run
+これはDocker上でなく、ホストOS上で試す
+``` cmd
+qemu-system-x86_64.exe -drive format=raw,file=./target/x86_64-rust_os/debug/bootimage-rust_os.bin
 ```
+
+## Memo: Boot
+- PCの電源ON
+- マザーボードROMに焼かれているファームウェアを実行
+    - power-on self-test を実行
+    - RAMが利用可能なことを検知
+    - CPUとハードウェアのpre-initialize
+    - boot可能なディスクを検知
+    - boot
+
+## ファームウェア(x86)
+- BIOS
+- UEFI
 
 ## 参考
 教科書:

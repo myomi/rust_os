@@ -7,6 +7,7 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+bootloader = "0.6.0"
 
 # error: language item required, but not found: `eh_personality` の解決に以下の記述を追加する。
 # eh_personality は stack unwindingの実装に必要な language item。ここではpanic時にabortすることでコンパイルエラーを回避する 
@@ -15,3 +16,6 @@ panic = "abort"
 
 [profile.release]
 panic = "abort"
+
+[package.metadata.bootimage]
+default-target = "x86_64-rust_os.json"
