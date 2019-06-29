@@ -14,7 +14,6 @@ mod vga_buffer;
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     println!("Hello World{}", "!");
-
     loop {}
 }
 
@@ -25,6 +24,7 @@ pub extern "C" fn _start() -> ! {
 /// "rust.all_targets": false の設定を .vscode/settings.json に追加してエラー出力を回避している
 /// 参考: https://github.com/rust-lang/rls/issues/904
 #[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
+fn panic(info: &PanicInfo) -> ! {
+    println!("{}", info);
     loop {}
 }
