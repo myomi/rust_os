@@ -102,7 +102,27 @@ impl Writer {
     }
 
     fn new_line(&mut self) {
-        /* TODO */
+        for row in 1..BUFFER_HEIGHT {
+            for col in 0..BUFFER_WIDTH {
+                let character = self.buffer.chars[row][col].read();
+                // １行上に書き直す
+                self.buffer.chars[row - 1][col].write(character);
+            }
+        }
+        // 最下行をクリア
+        self.clear_row(BUFFER_HEIGHT - 1);
+        // カーソルを再左端に移動
+        self.column_position = 0;
+    }
+
+    fn clear_row(&mut self, row: usize) {
+        let blank = ScreenChar {
+            ascii_char: b' ',
+            color_code: self.color_code,
+        };
+        for col in 0..BUFFER_WIDTH {
+            self.buffer.chars[row][col].write(blank);
+        }
     }
 }
 
@@ -129,5 +149,8 @@ pub fn print_something() {
 
     writer.write_byte(b'H');
     writer.write_string("ello ");
+    // VGA text bufferへの書き込みは絶対に失敗しない前提でunwrapしている
     write!(writer, "The numbers are {} and {}", 42, 1.0/3.0).unwrap();
+    writer.new_line();
+    writer.write_string("Hello, Rust OS!");
 }
