@@ -1,6 +1,7 @@
 FROM rustlang/rust:nightly
 
 ENV IMAGE_NAME=rust_os
+ENV DISPLAY host.docker.internal:0.0
 
 RUN rustup update
 RUN rustup component add rls rust-analysis rust-src llvm-tools-preview
@@ -14,7 +15,9 @@ RUN apt-get update \
     binutils \
     grub-common \
     xorriso \
-    grub-pc-bin
+    grub-pc-bin \
+    qemu \
+    qemu-kvm
 
 # Install other dependencies
 RUN apt-get install -y lldb-3.9

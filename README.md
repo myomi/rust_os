@@ -2,9 +2,19 @@
 RustでOSを書く
 
 ## Prerequirement
-VSCode with "Remote - Containers" extension
-Docker
-Qemu (動作確認用)
+- VSCode with "Remote - Containers" extension
+- Docker
+- ~~Qemu (動作確認用)~~
+- XServerを入れれば、Docker コンテナ内のQemuが使える（※）
+
+Windows の場合は VcXSrv(https://sourceforge.net/projects/vcxsrv/)をインストールする。
+
+scoopを利用している場合はextrasを導入したうえで
+
+```ps
+scoop install vcxsrv
+```
+
 
 ## Setup
 ```
@@ -26,6 +36,11 @@ cargo bootimage
 これはDocker上でなく、ホストOS上で試す
 ``` cmd
 qemu-system-x86_64.exe -drive format=raw,file=./target/x86_64-rust_os/debug/bootimage-rust_os.bin
+```
+
+XServer導入済の場合はDockerコンテナのシェルで
+```sh
+cargo xrun
 ```
 
 ## Memo: Boot
