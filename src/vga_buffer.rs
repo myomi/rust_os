@@ -1,5 +1,19 @@
 use core::fmt;
+use lazy_static::lazy_static;
+use spin::Mutex;
 use volatile::Volatile;
+
+lazy_static! {
+    pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
+        column_position: 0,
+        color_code: ColorCode::new(Color::Yellow, Color::Black),
+        // VGAビデオメモリのアドレス割り当て
+        // 0xA0000 - EGA/VGAグラフィックモード（64KB）
+        // 0xB0000 - モノクロテキストモード（32KB）
+        // 0xB8000 - カラーテキストモードおよびCGA互換グラフィックモード（32KB）
+        buffer: unsafe { &mut *(0xb8000 as *mut Buffer)},
+    });
+}
 
 /// VGA text mode のカラーパレット
 #[allow(dead_code)]
@@ -132,25 +146,4 @@ impl fmt::Write for Writer {
         self.write_string(s);
         Ok(())
     }
-}
-
-/// Writeのテスト
-pub fn print_something() {
-    use core::fmt::Write;
-    let mut writer = Writer {
-        column_position: 0,
-        color_code: ColorCode::new(Color::Yellow, Color::Black),
-        // VGAビデオメモリのアドレス割り当て
-        // 0xA0000 - EGA/VGAグラフィックモード（64KB）
-        // 0xB0000 - モノクロテキストモード（32KB）
-        // 0xB8000 - カラーテキストモードおよびCGA互換グラフィックモード（32KB）
-        buffer: unsafe { &mut *(0xb8000 as *mut Buffer)},
-    };
-
-    writer.write_byte(b'H');
-    writer.write_string("ello ");
-    // VGA text bufferへの書き込みは絶対に失敗しない前提でunwrapしている
-    write!(writer, "The numbers are {} and {}", 42, 1.0/3.0).unwrap();
-    writer.new_line();
-    writer.write_string("Hello, Rust OS!");
 }
