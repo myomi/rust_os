@@ -1,6 +1,8 @@
 FROM rustlang/rust:nightly
 
 ENV IMAGE_NAME=rust_os
+
+# setting for use Qemu from X Window server
 ENV DISPLAY host.docker.internal:0.0
 
 RUN rustup update
